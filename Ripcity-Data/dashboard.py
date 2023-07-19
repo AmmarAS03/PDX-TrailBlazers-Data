@@ -5,7 +5,7 @@ import seaborn as sns
 
 st.title('Portland Trail Blazers Performance Analysis')
 st.subheader('By Ammar Ash Shiddiq')
-st.write('Web Scra')
+
 
 st.markdown("---")
 
