@@ -13,19 +13,20 @@ st.subheader('By Ammar Ash Shiddiq')
 st.markdown("---")
 
 st.subheader('Preliminaries')
-"""I will be performing a simple web scraping and perform some data analysis.
+"""In this project, I will be performing a simple web scraping and perform some data analysis.
 Since I am a portland trailblazer fan, I want to see how well is my team last year. 
 The data are taken from https://www.basketball-reference.com/ and the data are official so we don't have to worry about some data error/mistakes."""
 
-st.subheader('Understanding the Problem')
+st.subheader('Descriptive Statistic')
 """
-A descriptive statistic is a summary statistic that quantitatively describes or summarizes 
+Definition: 
+a descriptive statistic is a summary statistic that quantitatively describes or summarizes 
 features from a collection of information. this is what I will do for this time. I want to do
-clustering and see how my favorite team performed last year, compared to previous years
+clustering and see how my favorite team performed last year, compared to previous years.
 """
 
 st.subheader('Correlation between the data')
-"Feature selection is an important step to do before you perform data clustering. I was sure that these are the important variables: "
+"Feature selection is an important step to do before you analyze a dataset. I was sure that these are the important variables: "
 "W/L% = Win per Loss Percentage"
 "SRS = Simple Rating System"
 "Pace = An Estimate of possessions per 48 Minute"
@@ -87,3 +88,50 @@ plt.plot(range(2, 7), silhouette_scores, '-o')
 plt.xlabel('Number of clusters, K')
 plt.ylabel('Silhouette score')
 st.pyplot(plt.gcf())
+
+kmeans = KMeans(n_clusters=2, random_state=0, n_init=10).fit(X)
+df['cluster'] = kmeans.labels_
+st.dataframe(data=df.head())
+
+
+
+"""
+A higher silhouetter score implies that the clusters are more distinct and well separated,
+leading to better defined groups of data points. As we can see from our observations above, we achieved
+the highest result of 0.5466484444797984 when the value is 2. This indicates that two clusters are
+quite well defined with each cluster having high cohesion and decent separation to each other. 
+"""
+
+st.subheader('K-means Clustering')
+
+"""
+According to AndreyBu, who has more than 5 years of machine learning experience, stated that 
+“the objective of K-means is simple: group similar data points together and discover underlying patterns. To achieve this objective, K-means looks for a fixed number (k) of clusters in a dataset.”
+
+"""
+st. write("<a href='https://towardsdatascience.com/understanding-k-means-clustering-in-machine-learning-6a6e67336aa1' id='my-link'>Source</a>", unsafe_allow_html=True)
+
+"Let's look at our K-means clustering result using 2 as our our value of how many clusters we want."
+st.dataframe(data=new_df.head())
+"Here's the visualization."
+plt.figure()
+sns.pairplot(new_df, hue='cluster')
+st.pyplot(plt.gcf())
+
+"Now we know what cluster does the trailblazer 22-23 belongs to and the visualization of the two cluster. Let's see for all the years where the data is available, which cluster do they belong to."
+
+
+seasons = new_df["Season"]
+clusters = new_df["cluster"]
+
+plt.figure(figsize=(10, 2))
+plt.plot(seasons[::-1], clusters[::-1], marker='o', linestyle='-')
+plt.xlabel("Season")
+plt.ylabel("Cluster")
+plt.title("Clusters over Seasons")
+plt.xticks(rotation=90)
+plt.grid(True)
+plt.yticks([0, 1])
+st.pyplot(plt.gcf())
+
+"So there you go. This is the dashboard from the web scraping and data analysis steps that i have done. Full steps of the web scraping and data analysis steps is in the same github project as this file. Thank you!"
